@@ -1,52 +1,67 @@
-# Prerequisites
-*.d
+using System;
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+class Program
+{
+    static void Main()
+    {
+        GuessTheNumber();
+    }
 
-# Linker output
-*.ilk
-*.map
-*.exp
+    static void GuessTheNumber()
+    {
+        Random random = new Random();
 
-# Precompiled Headers
-*.gch
-*.pch
+        while (true)
+        {
+            // Generate a random number between 1 and 100
+            int secretNumber = random.Next(1, 101);
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+            // Initialize the number of guesses
+            int numGuesses = 0;
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+            while (true)
+            {
+                // Get user input for the guess
+                Console.Write("Guess the number (between 1 and 100): ");
+                int userGuess;
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+                if (!int.TryParse(Console.ReadLine(), out userGuess))
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                    continue;
+                }
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+                // Increment the number of guesses
+                numGuesses++;
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+                // Check if the guess is correct
+                if (userGuess == secretNumber)
+                {
+                    Console.WriteLine($"Congratulations! You guessed the number {secretNumber} correctly in {numGuesses} guesses.");
+
+                    // Ask if the user wants to play again
+                    Console.Write("Do you want to play again? (yes/no): ");
+                    string playAgain = Console.ReadLine().ToLower();
+
+                    if (playAgain != "yes")
+                    {
+                        Console.WriteLine("Thanks for playing. Goodbye!");
+                        return;
+                    }
+                    else
+                    {
+                        break; // Break out of the inner loop to generate a new random number for the next round
+                    }
+                }
+                else if (userGuess > secretNumber)
+                {
+                    Console.WriteLine("Too high, try again.");
+                }
+                else
+                {
+                    Console.WriteLine("Too low, try again.");
+                }
+            }
+        }
+    }
+}
